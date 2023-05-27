@@ -19,7 +19,7 @@ def extractData(id, logs = False):
 
     print(data['nomCompetition'])
     style = "<style>table, th, td {border: 1px solid black; border-collapse: collapse; text-align: center;}</style>"
-    strTable = f"<!DOCTYPE html><head><meta http-equiv=\"refresh\" content=\"5\"><body><html>{style}<h1>{data['nomCompetition']}</h1><br/>"
+    strTable = f"<!DOCTYPE html><html lang=\"fr\"><head><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"5\"><title>{data['nomCompetition']}</title><body>{style}<h1>{data['nomCompetition']}</h1><br/>"
     strTable += f"<h2>Lieu : {data['lieu']}</h2><br/>"
     strTable += f"<h3><a href='https://escalade.online/resultat.html?id={id}'>Lien vers les résultats officiels</a></h3><br/>"
 
