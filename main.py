@@ -77,13 +77,9 @@ def extractData(id, logs = False):
     with open(file, 'w') as f:
         f.write(strTable)
 
-if __name__ == "__main__":
-
-    RANGE_MIN = int(input("Borne inférieure (environ 11550 en avril 2023) : "))
-    RANGE_MAX = int(input("Borne supérieure: (environ 11600 en avril 2023) : "))
-
+def requestComps(min, max):
     comps = {}
-    for i in tqdm(range(RANGE_MIN, RANGE_MAX)):
+    for i in tqdm(range(min, max)):
         url = BASE_URL + str(i)
         r = requests.get(url)
         if r.text != "":
@@ -92,6 +88,17 @@ if __name__ == "__main__":
             print(f"\nFound competition: {data['nomCompetition']} at url https://escalade.online/resultat.html?id={i}")
 
     print("Requests done.")
+    return comps
+
+def main(min = None, max = None):
+    if (min != None) and (max != None):
+        range_min = min
+        range_max = max
+    else:
+        range_min = int(input("Borne inférieure (environ 11550 en avril 2023) : "))
+        range_max = int(input("Borne supérieure: (environ 11600 en avril 2023) : "))
+
+    comps = requestComps(range_min, range_max)
 
     print(f"Found {len(list(comps))} competitions:")
 
@@ -105,10 +112,13 @@ if __name__ == "__main__":
         with open(f"data/{i}.json", 'w') as j:
             json.dump(comps[i], j)
 
-    print("Voulez-vous extraire les données ?")
-    print("1. Oui")
-    print("2. Non")
-    choice = int(input("Choix: "))
+    if min!= None and max != None:
+        choice = 1
+    else :
+        print("Voulez-vous extraire les données ?")
+        print("1. Oui")
+        print("2. Non")
+        choice = int(input("Choix: "))
     if choice == 1:
 
         data_files = os.listdir("data/")
@@ -116,14 +126,15 @@ if __name__ == "__main__":
             os.mkdir("html")
         except:
             pass
-
-
-        for id in data_files:
-            try:
-                extractData(id.replace(".json", ""), False)
-            except:
-                print(f"Erreur lors de l'extraction de {id}")
-                continue
+        if main != None and max != None:
+            extractData(min, False)
+        else:
+            for id in data_files:
+                try:
+                    extractData(id.replace(".json", ""), False)
+                except:
+                    print(f"Erreur lors de l'extraction de {id}")
+                    continue
         print()
         print("Les données ont été extraites dans le dossier html.")
         print()
@@ -131,4 +142,10 @@ if __name__ == "__main__":
     else:
         print("Fin du programme.")
 
-    input("Press enter to exit.")
+    if min != None and max != None:
+        pass
+    else:
+        input("Press enter to exit.")
+
+if __name__ == "__main__":
+    main()
