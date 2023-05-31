@@ -73,7 +73,7 @@ function extractData(data, id,  logs = false) {
         if (group['resultats'] != null) { // Ne prends pas en compte les groupes sans résultats
 
             // Name of the table
-            let groupeHeader = group["categorie"] + group["sexe"];
+            let groupeHeader = group["categorie"] + " " + group["sexe"];
 
             let table = "<h2>" + groupeHeader + "</h2><br/>"
 
@@ -98,7 +98,7 @@ function extractData(data, id,  logs = false) {
                 }
 
                 // Start of line
-                let line = "<tr><td>" + competitor["classement"] + "</td><td>" + competitor["nom"] + competitor["prenom"] + "</td><td>" + competitor["club"] + "</td>";
+                let line = "<tr><td>" + competitor["classement"] + "</td><td>" + competitor["nom"] + " " + competitor["prenom"] + "</td><td>" + competitor["nomClub"] + "</td>";
 
                 for (let etape of competitor["etapes"]) {
                     let id = etape["idEtape"];
