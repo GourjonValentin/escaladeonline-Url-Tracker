@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tracker d'URLs de compétition</title>
+    <script src="main.js"></script>
+</head>
+<body>
+    <h1>Tracker d'URLs de compétition</h1>
+    <div>
+        <label for="min">Borne minimum (11600 début juin 2023): </label>
+        <input type="number" name="min" id="min" value="11600">
+        <br/><br/>
+
+        <label for="max">Borne maximum (11650 début juin 2023): </label>
+        <input type="number" name="max" id="max" value="11650">
+        <br/><br/>
+        <button onclick="search()">Tracker</button>
+    </div>
+    <br/><br/>
+    <div id="result"></div>
+    <div id="links"></div>
+
+</body>
+</html>
