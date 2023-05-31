@@ -136,7 +136,10 @@ function extractData(data, id,  logs = false) {
 }
 
 function backupResult(data, id) {
-    fs.writeFile("data/" + id + ".json", JSON.stringify(data), (err) => {
+    if (!fs.existsSync("data/")){
+        fs.mkdirSync("data/");
+    }
+    fs.writeFileSync("data/" + id + ".json", JSON.stringify(data), (err) => {
         if (err) {
             console.error(err);
             return;
