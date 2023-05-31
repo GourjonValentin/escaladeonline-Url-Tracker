@@ -7,6 +7,7 @@ const port = 3001;
 
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
+    console.log("Request /");
     res.sendFile(__dirname + '/find.html');
 });
 
@@ -151,12 +152,14 @@ app.get('/resultat/:id', async (req, res) => {
     const id = req.params.id;
     const data = await requestComp(id);
     const html = extractData(data, id);
+    console.log("Send result of " + id);
     res.send(html);
 });
 app.get('/resultats', async (req, res) => {
     const min = req.query.min;
     const max = req.query.max;
     const data = await requestComps(min, max);
+    console.log("Send result of " + min + " to " + max);
     res.send(data);
 });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
