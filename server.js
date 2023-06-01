@@ -60,12 +60,13 @@ function getRouteFromId(id, group) {
         }
     }
 }
-
 function extractData(data, id,  logs = false) {
+
 
     // Head of html file
     const style = "<style>table, th, td {border: 1px solid black; border-collapse: collapse; text-align: center;}</style>"
     let html = "<!DOCTYPE html><html lang='fr'><head><meta charset='utf-8'><meta http-equiv='refresh' content='30'><title>" + data["nomCompetition"] + "</title><body>" + style + "<h1>" + data["nomCompetition"] + "</h1><br/>";
+    html += "<h3><a href='../'>Revenir à la page de recherche</a></h3><br/>"
     html += "<h2>Lieu : " + data["lieu"] + "</h2><br/>";
     html += "<h3><a href='" + "https://escalade.online/resultat.html?id=" + id + "'>Lien vers les résultats officiels de la compétition</a></h3><br/>";
 
