@@ -61,7 +61,9 @@ function getRouteFromId(id, group) {
     }
 }
 function extractData(data, id,  logs = false) {
-
+    if (data == null) {
+        return "<!DOCTYPE html><html lang='fr'><head><meta charset='utf-8'><meta http-equiv='refresh' content='30'><title id='title'>Erreur</title><body><h1>Erreur</h1><br/><h2>La compétition n'existe pas</h2><br/><h3><a href='../'>Revenir à la page de recherche</a></h3><br/></body></html>";
+    }
 
     // Head of html file
     const style = "<style>table, th, td {border: 1px solid black; border-collapse: collapse; text-align: center;}</style>"
@@ -137,16 +139,30 @@ function extractData(data, id,  logs = false) {
     return html;
 }
 
-function backupResult(data, id) {
-    if (!fs.existsSync("data/")){
-        fs.mkdirSync("data/");
-    }
-    fs.writeFileSync("data/" + id + ".json", JSON.stringify(data), (err) => {
-        if (err) {
-            console.error(err);
-            return;
+function backupResult(data, id, full = false) {
+    if (full) {
+        if (!fs.existsSync("backup/")){
+            fs.mkdirSync("backup/");
         }
-    });
+        // Backup data with date ant time in name
+        const date = new Date();
+        const name = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
+        fs.writeFileSync("backup/" + id + "_" + name + ".json", JSON.stringify(data), (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    }
+    else {
+        if (!fs.existsSync("data/")){
+            fs.mkdirSync("data/");
+        }
+        fs.writeFileSync("data/" + id + ".json", JSON.stringify(data), (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    }
 }
 
 app.get('/resultat/:id', async (req, res) => {
@@ -163,4 +179,28 @@ app.get('/resultats', async (req, res) => {
     console.log("Send result of " + min + " to " + max);
     res.send(data);
 });
+
+app.get('/backup/:id', async (req, res) => {
+    const id = req.params.id;
+    const data = await requestComp(id);
+    backupResult(data, id, true);
+    console.log("Backup results of " + id);
+    res.send("Backup done");
+});
+
+app.get('/backup', async (req, res) => {
+    const min = req.query.min;
+    const max = req.query.max;
+    const data = await requestComps(min, max);
+    for (let id in data) {
+        backupResult(data[id], id, true);
+    }
+    console.log("Backup results of " + min + " to " + max);
+    res.send("Backup of all done");
+});
+
+/* Gestion de la délétion des backups, on pause
+app.get('/manageBackups', async (req, res) => {
+
+});*/
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
