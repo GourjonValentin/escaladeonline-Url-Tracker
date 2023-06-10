@@ -4,14 +4,19 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
+var nb_request = 0;
 
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
     console.log("Request /");
+    nb_request++;
+    console.log("Request " + nb_request);
     res.sendFile(__dirname + '/find.html');
 });
 
 app.get("/main.js", (req, res) => {
+    nb_request++;
+    console.log("Request " + nb_request);
     res.sendFile(__dirname + "/main.js");
 });
 
@@ -166,29 +171,36 @@ function backupResult(data, id, full = false) {
 }
 
 app.get('/resultat/:id', async (req, res) => {
+    nb_request++;
     const id = req.params.id;
     const data = await requestComp(id);
     const html = extractData(data, id);
     console.log("Send result of " + id);
+    console.log("Request " + nb_request);
     res.send(html);
 });
 app.get('/resultats', async (req, res) => {
+    nb_request++;
     const min = req.query.min;
     const max = req.query.max;
     const data = await requestComps(min, max);
     console.log("Send result of " + min + " to " + max);
+    console.log("Request " + nb_request);
     res.send(data);
 });
 
 app.get('/backup/:id', async (req, res) => {
+    nb_request++;
     const id = req.params.id;
     const data = await requestComp(id);
     backupResult(data, id, true);
     console.log("Backup results of " + id);
+    console.log("Request " + nb_request);
     res.send("Backup done");
 });
 
 app.get('/backup', async (req, res) => {
+    nb_request++;
     const min = req.query.min;
     const max = req.query.max;
     const data = await requestComps(min, max);
@@ -196,6 +208,7 @@ app.get('/backup', async (req, res) => {
         backupResult(data[id], id, true);
     }
     console.log("Backup results of " + min + " to " + max);
+    console.log("Request " + nb_request);
     res.send("Backup of all done");
 });
 
