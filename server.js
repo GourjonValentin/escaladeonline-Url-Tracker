@@ -31,6 +31,7 @@ async function getJson(url){
             });
             resp.on('end', () => {
                 if (data !== "") {
+                    console.log(data);
                     resolve(JSON.parse(data));
                 } else {
                     resolve(null);
@@ -41,7 +42,7 @@ async function getJson(url){
 }
 
 async function requestComp(id){
-    const data = await getJson("https://escalade.online/ws/app/resultatJson/" + id);
+    const data = await getJson("https://mycompet.ffme.fr/ws/app/resultatJson/" + id);
     if (data != null) {
         backupResult(data, id);
     }
@@ -75,7 +76,7 @@ function extractData(data, id,  logs = false) {
     let html = "<!DOCTYPE html><html lang='fr'><head><meta charset='utf-8'><meta http-equiv='refresh' content='30'><title>" + data["nomCompetition"] + "</title><body>" + style + "<h1>" + data["nomCompetition"] + "</h1><br/>";
     html += "<h3><a href='../'>Revenir à la page de recherche</a></h3><br/>"
     html += "<h2>Lieu : " + data["lieu"] + "</h2><br/>";
-    html += "<h3><a href='" + "https://escalade.online/resultat.html?id=" + id + "'>Lien vers les résultats officiels de la compétition</a></h3><br/>";
+    html += "<h3><a href='" + "https://mycompet.ffme.fr/resultat.html?id=" + id + "'>Lien vers les résultats officiels de la compétition</a></h3><br/>";
 
     // Get all groupes
     for (let group of data["groupes"]) {
