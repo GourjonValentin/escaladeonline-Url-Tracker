@@ -31,7 +31,7 @@ async function getJson(url){
             });
             resp.on('end', () => {
                 if (data !== "") {
-                    console.log(data);
+                    console.log("Comp on " + url);
                     resolve(JSON.parse(data));
                 } else {
                     resolve(null);
