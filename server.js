@@ -8,8 +8,33 @@ var nb_request = 0;
 
 app.use(bodyParser.json());
 
+function centerString(str, size) {
+    let str_size = str.length;
+    let str_space = size - str_size;
+    let str_space_left = Math.floor(str_space / 2);
+    let str_space_right = str_space - str_space_left;
+    return " ".repeat(str_space_left) + str + " ".repeat(str_space_right);
+}
+
 function log(type, msg, ip) {
-    console.log("[" + nb_request + "] [" + new Date() + "] [" + ip + "] ["+ type + "] : " + msg);
+    let options = {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric"
+    };
+    let date = new Date().toLocaleDateString("fr-FR", options);
+    nb_request = centerString(`${nb_request}`, 6); // Center request number on 6 characters
+    // Center IP on 22 characters
+    if (ip != null) {
+        ip = centerString(ip, 22)
+    } else {
+        ip = " ".repeat(22);
+    }
+    type = centerString(type, 6)
+    console.log("[" + nb_request + "] [" + date + "] [" + ip + "] ["+ type + "] : " + msg);
 }
 
 async function getJson(url){
