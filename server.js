@@ -9,11 +9,11 @@ var nb_request = 0;
 app.use(bodyParser.json());
 
 function log(type, msg, ip) {
-    console.log("[" + new Date() + "] [" + ip + "] ["+ type + "] " + msg);
+    console.log("[" + nb_request + "] [" + new Date() + "] [" + ip + "] ["+ type + "] : " + msg);
 }
 
 async function getJson(url){
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         https.get(url, (resp) => {
             // Get response and return json data
             let data = '';
@@ -22,12 +22,12 @@ async function getJson(url){
             });
             resp.on('end', () => {
                 if (data !== "") {
-                    console.log("Comp on " + url);
+                    log("GET", url, resp.socket.remoteAddress)
                     try {
                         resolve(JSON.parse(data));
                     }
                       catch (err) {
-                        console.log("Error on " + url);
+                        log("ERROR", "Error while parsing json data of " + url , resp.socket.remoteAddress)
                         console.log(data);
                         resolve(null);
                       }
@@ -154,7 +154,7 @@ function backupResult(data, id, full = false) {
         const name = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + "_" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
         fs.writeFileSync("backup/" + id + "_" + name + ".json", JSON.stringify(data), (err) => {
             if (err) {
-                console.error(err);
+                log("ERROR", "Error while writing backup file", err);
             }
         });
     }
@@ -164,22 +164,19 @@ function backupResult(data, id, full = false) {
         }
         fs.writeFileSync("data/" + id + ".json", JSON.stringify(data), (err) => {
             if (err) {
-                console.error(err);
+                log("ERROR", "Error while writing data file", err);
             }
         });
     }
 }
 
 app.get('/', (req, res) => {
-    log("LOG", "Request " + nb_request + " to /", req.ip);
     nb_request++;
-    console.log("Request " + nb_request);
+    log("LOG", "Request to /", req.ip);
     res.sendFile(__dirname + '/find.html');
 });
 
 app.get("/main.js", (req, res) => {
-    nb_request++;
-    console.log("Request " + nb_request);
     res.sendFile(__dirname + "/main.js");
 });
 
@@ -188,8 +185,7 @@ app.get('/resultat/:id', async (req, res) => {
     const id = req.params.id;
     const data = await requestComp(id);
     const html = extractData(data, id);
-    console.log("Send result of " + id + " on " + new Date());
-    console.log("Request " + nb_request);
+    log("LOG", "Request to /resultat/" + id, req.ip);
     res.send(html);
 });
 app.get('/resultats', async (req, res) => {
@@ -197,8 +193,7 @@ app.get('/resultats', async (req, res) => {
     const min = req.query.min;
     const max = req.query.max;
     const data = await requestComps(min, max);
-    console.log("Send result of " + min + " to " + max + " on " + new Date());
-    console.log("Request " + nb_request);
+    log("LOG", "Request to /resultats from " + min + " to " + max , req.ip);
     res.send(data);
 });
 
@@ -207,8 +202,7 @@ app.get('/backup/:id', async (req, res) => {
     const id = req.params.id;
     const data = await requestComp(id);
     backupResult(data, id, true);
-    console.log("Backup results of " + id + " on " + new Date());
-    console.log("Request " + nb_request);
+    log("LOG", "Backup of " + id, req.ip);
     res.send("Backup done");
 });
 
@@ -220,8 +214,7 @@ app.get('/backup', async (req, res) => {
     for (let id in data) {
         backupResult(data[id], id, true);
     }
-    console.log("Backup results of " + min + " to " + max + " on " + new Date());
-    console.log("Request " + nb_request );
+    log("LOG", "Backup from " + min + " to " + max, req.ip);
     res.send("Backup of all done");
 });
 
@@ -229,4 +222,5 @@ app.get('/backup', async (req, res) => {
 app.get('/manageBackups', async (req, res) => {
 
 });*/
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
