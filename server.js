@@ -7,19 +7,10 @@ const port = 3001;
 var nb_request = 0;
 
 app.use(bodyParser.json());
-app.get('/', (req, res) => {
-    console.log("Request /" + " on " + new Date());
-    nb_request++;
-    console.log("Request " + nb_request);
-    res.sendFile(__dirname + '/find.html');
-});
 
-app.get("/main.js", (req, res) => {
-    nb_request++;
-    console.log("Request " + nb_request);
-    res.sendFile(__dirname + "/main.js");
-});
-
+function log(type, msg, ip) {
+    console.log("[" + new Date() + "] [" + ip + "] ["+ type + "] " + msg);
+}
 
 async function getJson(url){
     return new Promise((resolve, reject) => {
@@ -32,7 +23,15 @@ async function getJson(url){
             resp.on('end', () => {
                 if (data !== "") {
                     console.log("Comp on " + url);
-                    resolve(JSON.parse(data));
+                    try {
+                        resolve(JSON.parse(data));
+                    }
+                      catch (err) {
+                        console.log("Error on " + url);
+                        console.log(data);
+                        resolve(null);
+                      }
+
                 } else {
                     resolve(null);
                 }
@@ -170,6 +169,19 @@ function backupResult(data, id, full = false) {
         });
     }
 }
+
+app.get('/', (req, res) => {
+    log("LOG", "Request " + nb_request + " to /", req.ip);
+    nb_request++;
+    console.log("Request " + nb_request);
+    res.sendFile(__dirname + '/find.html');
+});
+
+app.get("/main.js", (req, res) => {
+    nb_request++;
+    console.log("Request " + nb_request);
+    res.sendFile(__dirname + "/main.js");
+});
 
 app.get('/resultat/:id', async (req, res) => {
     nb_request++;
