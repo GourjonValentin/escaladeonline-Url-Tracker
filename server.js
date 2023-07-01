@@ -96,7 +96,7 @@ function extractData(data, id,  logs = false) {
     }
 
     // Head of html file
-    const style = "<style>table, th, td {border: 1px solid black; border-collapse: collapse; text-align: center;}</style>"
+    const style = "<style>table, th, td {border: 1px solid black; border-collapse: collapse; text-align: center;} .top {color: #ff0000 </style>"
     let html = "<!DOCTYPE html><html lang='fr'><head><meta charset='utf-8'><meta http-equiv='refresh' content='30'><title>" + data["nomCompetition"] + "</title><body>" + style + "<h1>" + data["nomCompetition"] + "</h1><br/>";
     html += "<h3><a href='../'>Revenir à la page de recherche</a></h3><br/>"
     html += "<h2>Lieu : " + data["lieu"] + "</h2><br/>";
@@ -143,7 +143,10 @@ function extractData(data, id,  logs = false) {
                     }
 
                     // Add result to line
-                    line += "<td>" + etape["resultat"] + "</td>";
+                    let result = etape["resultat"];
+                    if (result.search("T") !== -1) {result = "<span class='top'>" + result + "</span>"}
+
+                    line += "<td>" + result + "</td>";
 
                 }
 
