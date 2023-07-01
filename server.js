@@ -22,12 +22,12 @@ async function getJson(url){
             });
             resp.on('end', () => {
                 if (data !== "") {
-                    log("GET", url, resp.socket.remoteAddress)
+                    log("GET", url)
                     try {
                         resolve(JSON.parse(data));
                     }
                       catch (err) {
-                        log("ERROR", "Error while parsing json data of " + url , resp.socket.remoteAddress)
+                        log("ERROR", "Error while parsing json data of " + url)
                         console.log(data);
                         resolve(null);
                       }
