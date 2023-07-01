@@ -50,13 +50,19 @@ async function getJson(url){
                     log("GET", url)
                     try {
                         resolve(JSON.parse(data));
-                    }
-                      catch (err) {
+                    } catch (err) {
                         log("ERROR", "Error while parsing json data of " + url)
                         console.log(data);
-                        resolve(null);
+                        try {
+                            data = fs.readFileSync(url.slice(-5) + ".json", 'utf8');
+                            resolve(JSON.parse(data));
+                        }
+                        catch (errr) {
+                            log("ERROR", "Error while parsing json data of " + url + " (backup file)");
+                            console.log(errr);
+                            resolve(null);
                       }
-
+                    }
                 } else {
                     resolve(null);
                 }
