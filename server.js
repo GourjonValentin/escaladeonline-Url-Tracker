@@ -253,6 +253,27 @@ app.get('/backup', async (req, res) => {
     res.send("Backup of all done");
 });
 
+app.get('/load', async (req, res) => {
+    nb_request++;
+    log("LOG", "Request to /load", req.ip);
+    res.sendFile(__dirname + '/loadBackups.html');
+});
+
+app.get('/getBackups', async (req, res) => {
+    nb_request++;
+    log("LOG", "Request to /getBackups", req.ip);
+    res.send(fs.readdirSync("backup/"));
+});
+
+app.get('/load/:id', async (req, res) => {
+    nb_request++;
+    const id = req.params.id;
+    const data = JSON.parse(fs.readFileSync("backup/" + id + ".json"));
+    const html = extractData(data, id);
+    log("LOG", "Request to /load/" + id, req.ip);
+    res.send(html);
+});
+
 /* Gestion de la délétion des backups, on pause
 app.get('/manageBackups', async (req, res) => {
 

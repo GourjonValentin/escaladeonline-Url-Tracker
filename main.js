@@ -1,4 +1,5 @@
 async function getResults(min, max){
+    // Get data from server
     return await fetch("/resultats?min=" + min + "&max=" + max).then((res) => {
         return res.json();
     });

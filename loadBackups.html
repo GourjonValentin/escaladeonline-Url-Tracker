@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button onclick="loadBackups()">Load backups</button>
+    <div id="result"></div>
+    <script>
+        async function loadBackups() {
+            let data = await fetch('/getBackups').then(res => {
+                return res.json()
+            });
+            let result = document.getElementById('result');
+            result.innerHTML = '';
+            for (let i = 0; i < data.length; i++) {
+                let div = document.createElement('div');
+                div.innerHTML = `<a href="/load/${data[i].slice(0, -5)}">${data[i].slice(0, -5)}</a>`
+                result.appendChild(div);
+            }
+        }
+    </script>
+</body>
+</html>
