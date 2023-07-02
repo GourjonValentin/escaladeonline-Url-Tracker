@@ -35,7 +35,11 @@ function log(type, msg, ip) {
         ip = " ".repeat(22);
     }
     type = centerString(type, 6)
-    console.log("[" + requests + "] [" + date + "] [" + ip + "] ["+ type + "] : " + msg);
+    let full_log = "[" + requests + "] [" + date + "] [" + ip + "] ["+ type + "] : " + msg;
+    console.log(full_log);
+    fs.appendFile("logs.txt", full_log + "\n", function (err) {
+        if (err) throw err;
+    });
 }
 
 async function getJson(url){
