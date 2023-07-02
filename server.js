@@ -53,10 +53,14 @@ async function getJson(url){
                     try {
                         resolve(JSON.parse(data));
                     } catch (err) {
-                        log("ERROR", "Error while parsing json data of " + url)
-                        console.log(data);
-                        if (fs.existsSync(url.slice(-5) + ".json"))
-                        {
+                        if (data.match(/<title>404 Not Found<\/title>/g)) {
+                            log("ERROR", "Error 404 while parsing json data of " + url)
+                        }
+                        else {
+                            log("ERROR", "Error while parsing json data of " + url)
+                            console.log(data);
+                        }
+                        if (fs.existsSync(url.slice(-5) + ".json")) {
                             try {
                                 data = fs.readFileSync(url.slice(-5) + ".json", 'utf8');
                                 resolve(JSON.parse(data));
