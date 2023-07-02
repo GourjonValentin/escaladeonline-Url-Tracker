@@ -225,8 +225,14 @@ app.get('/resultat/:id', async (req, res) => {
 });
 app.get('/resultats', async (req, res) => {
     nb_request++;
-    const min = req.query.min;
-    const max = req.query.max;
+    let min = req.query.min;
+    let max = req.query.max;
+    if (min <= 11600) {
+        min = 11600;
+    }
+    if (max >= 12000) {
+        max = 12000;
+    }
     const data = await requestComps(min, max);
     log("LOG", "Request to /resultats from " + min + " to " + max , req.ip);
     res.send(data);
