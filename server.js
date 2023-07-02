@@ -251,7 +251,11 @@ app.get('/resultats', async (req, res) => {
         max = 11800;
     }
     const data = await requestComps(min, max);
-    log("LOG", "Sending results to /resultats from " + min + " to " + max , req.ip);
+    if (Object.keys(data).length === 0 && data.constructor === Object) {
+        log("LOG", "No data found", req.ip);
+    } else {
+        log("LOG", "Sending results to /resultats from " + min + " to " + max , req.ip);
+    }
     res.send(data);
 });
 
