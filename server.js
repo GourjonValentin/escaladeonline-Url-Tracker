@@ -244,12 +244,6 @@ app.get('/resultats', async (req, res) => {
     let min = req.query.min;
     let max = req.query.max;
     log("LOG", "Request to /resultats from " + min + " to " + max , req.ip);
-    if (min <= 11650) {
-        min = 11650;
-    }
-    if (max >= 11800) {
-        max = 11800;
-    }
     const data = await requestComps(min, max);
     if (Object.keys(data).length === 0 && data.constructor === Object) {
         log("LOG", "No data found", req.ip);
