@@ -4,7 +4,8 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
-var nb_request = 0;
+let nb_request = 0;
+let sub_request = 0;
 
 app.use(bodyParser.json());
 
@@ -26,7 +27,7 @@ function log(type, msg, ip) {
         second: "numeric"
     };
     let date = new Date().toLocaleDateString("fr-FR", options);
-    nb_request = centerString(`${nb_request}`, 6); // Center request number on 6 characters
+    let requests = centerString(`${nb_request}`, 5) + "-" + centerString(`${sub_request}`, 6); // Center request number on 6 characters
     // Center IP on 22 characters
     if (ip != null) {
         ip = centerString(ip, 22)
@@ -34,11 +35,12 @@ function log(type, msg, ip) {
         ip = " ".repeat(22);
     }
     type = centerString(type, 6)
-    console.log("[" + nb_request + "] [" + date + "] [" + ip + "] ["+ type + "] : " + msg);
+    console.log("[" + requests + "] [" + date + "] [" + ip + "] ["+ type + "] : " + msg);
 }
 
 async function getJson(url){
     return new Promise((resolve) => {
+        sub_request++;
         https.get(url, (resp) => {
             // Get response and return json data
             let data = '';
@@ -53,15 +55,21 @@ async function getJson(url){
                     } catch (err) {
                         log("ERROR", "Error while parsing json data of " + url)
                         console.log(data);
-                        try {
-                            data = fs.readFileSync(url.slice(-5) + ".json", 'utf8');
-                            resolve(JSON.parse(data));
-                        }
-                        catch (errr) {
-                            log("ERROR", "Error while parsing json data of " + url + " (backup file)");
-                            console.log(errr);
+                        if (fs.existsSync(url.slice(-5) + ".json"))
+                        {
+                            try {
+                                data = fs.readFileSync(url.slice(-5) + ".json", 'utf8');
+                                resolve(JSON.parse(data));
+                            }
+                            catch (errr) {
+                                log("ERROR", "Error while parsing json data of " + url + " (backup file)");
+                                console.log(errr);
+                                resolve(null);
+                          }
+                        } else {
+                            log("ERROR", "No backup file for " + url + " (backup file)");
                             resolve(null);
-                      }
+                        }
                     }
                 } else {
                     resolve(null);
@@ -227,14 +235,15 @@ app.get('/resultats', async (req, res) => {
     nb_request++;
     let min = req.query.min;
     let max = req.query.max;
-    if (min <= 11600) {
-        min = 11600;
+    log("LOG", "Request to /resultats from " + min + " to " + max , req.ip);
+    if (min <= 11650) {
+        min = 11650;
     }
-    if (max >= 12000) {
-        max = 12000;
+    if (max >= 11800) {
+        max = 11800;
     }
     const data = await requestComps(min, max);
-    log("LOG", "Request to /resultats from " + min + " to " + max , req.ip);
+    log("LOG", "Sending results to /resultats from " + min + " to " + max , req.ip);
     res.send(data);
 });
 
@@ -285,4 +294,6 @@ app.get('/manageBackups', async (req, res) => {
 
 });*/
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}!`)
+});
