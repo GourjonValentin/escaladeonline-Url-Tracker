@@ -307,5 +307,5 @@ app.get('/manageBackups', async (req, res) => {
 });*/
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`)
+    log("START", `App listening on port ${port}!`, "localhost");
 });
