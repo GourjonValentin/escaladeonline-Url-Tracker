@@ -1,5 +1,11 @@
 async function getResults(min, max){
     // Get data from server
+    if (min <= 11650) {
+        min = 11650;
+    }
+    if (max >= 12000) {
+        max = 12000;
+    }
     return await fetch("/resultats?min=" + min + "&max=" + max).then((res) => {
         return res.json();
     });
