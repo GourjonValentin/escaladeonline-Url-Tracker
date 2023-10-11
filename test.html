@@ -1,0 +1,1319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta http-equiv="refresh" content="1800"/>
+    <title>Escalade Online</title>
+    <link rel="icon" type="image/png" href="logo512.png"/>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+        }
+
+        #logo {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: 100px;
+        }
+
+        #title {
+            position: absolute;
+            top: 5px;
+            left: 150px;
+            right: 5px;
+            height: 50px;
+            font-size: 45px;
+        }
+
+        #title1 {
+            font-size: 24px;
+            color: #0095db;
+        }
+
+        #title2 {
+            font-size: 45px;
+            color: #164194;
+        }
+
+        #title3 {
+            font-size: 24px;
+            color: #d02e26;
+        }
+
+        #chrono {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 50px;
+            color: #ff0000;
+        }
+
+        #result {
+            position: absolute;
+            top: 60px;
+            bottom: 5px;
+            left: 50px;
+            right: 5px;
+            overflow-y: hidden;
+        }
+
+        #rHead {
+            position: absolute;
+            height: 30px;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            z-index: 1000;
+            font-size: 24px;
+            overflow: hidden;
+            background-color: #164194;
+            color: white;
+        }
+
+        #rBody {
+            position: absolute;
+            top: 30px;
+            bottom: 30px;
+            left: 0px;
+            right: 0px;
+            font-size: 18px;
+            overflow: hidden;
+        }
+
+        #rBody table,
+        #rBody table tr td {
+            border: 1px solid black;
+        }
+
+        #rFoot {
+            position: absolute;
+            height: 30px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            font-size: 24px;
+            overflow: hidden;
+        }
+
+        #rDynamicTree {
+            width: 100%;
+            height: 100%;
+        }
+
+        #rDynamicTree > thead > tr {
+            background-color: #164194;
+            color: #FFF;
+            font-size: 24px;
+        }
+
+
+        #rDynamicTree > tbody > tr > td {
+            width: auto;
+            height: auto;
+        }
+
+        #rDynamicTree > tbody > tr > td > div.header {
+            background-color: #164194;
+            color: #FFF;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #chronoArea, #waitImg {
+            position: absolute;
+            top: 0px;
+            bottom: 5px;
+            left: 50px;
+            right: 5px;
+        }
+
+        #pub{
+            position: absolute;
+            top: 88px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            width:auto;
+            height:auto;
+        }
+        #waitImg div {
+            position: absolute;
+            top: 200px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #chronoArea div {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            color: white;
+            background-color: black;
+            border: solid 8px black;
+        }
+
+        #chronoArea div div {
+            width: 80%;
+            border: solid 2px red;
+            padding: 10px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #chrono1 {
+            top:0px;
+            left:0px;
+        }
+
+        #chrono2 {
+            bottom:0px;
+            left:0px;
+        }
+
+        #chrono3 {
+            top:0px;
+            right:0px;
+        }
+
+        #chrono4 {
+            bottom:0px;
+            right:0px;
+        }
+
+        td {
+            position: relative;
+        }
+
+        .verticalLine {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            border-left: 1px solid black;
+            z-index: 9999;
+        }
+
+        .verticalLineHalfUpper {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50%;
+            border-left: 1px solid black;
+            z-index: 9999;
+        }
+
+        .verticalLineHalfLower {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50%;
+            border-left: 1px solid black;
+            z-index: 9999;
+        }
+
+        .horizontalLine {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: calc(20% - 20px);
+            height: 50%;
+            border-bottom: 1px solid black;
+            z-index: 9999;
+        }
+
+        .horizontalLineFull {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 100%;
+            height: 50%;
+            border-bottom: 1px solid black;
+            z-index: 9999;
+        }
+
+        .cellText {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 50%;
+            height: 100%;
+            padding: 0px 10px;
+            background-color: #CCC;
+        }
+    </style>
+    <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+</head>
+<body onload="init()">
+<img id="logo" alt="Logo" src="ffme.png"/>
+<div id="title">
+    <span id="title1"></span>
+    <span id="title2"></span>
+    <span id="title3"></span>
+</div>
+<div id="chrono">-</div>
+<div id="result">
+    <div id="rHead"></div>
+    <div id="rBody">
+        <div id="rBodyC" ></div>
+    </div>
+    <div id="rFoot"></div>
+    <table id="rDynamicTree"></table>
+</div>
+<div id="chronoArea" style="display: none;">
+    <div id="chrono1">
+        <div class="chronoTime" id="chronoTime1">00:00:00.0</div>
+        <div class="chronoName"><span id="chronoDossard1">-</span><span id="chronoName1">-</span></div>
+        <div class="chronoBlock" id="chronoBlock1"></div>
+    </div>
+    <div id="chrono2">
+        <div class="chronoTime" id="chronoTime2">00:00:00.0</div>
+        <div class="chronoName"><span id="chronoDossard2">-</span><span id="chronoName2">-</span></div>
+        <div class="chronoBlock" id="chronoBlock2"></div>
+    </div>
+    <div id="chrono3">
+        <div class="chronoTime" id="chronoTime3">00:00:00.0</div>
+        <div class="chronoName"><span id="chronoDossard3">-</span><span id="chronoName3">-</span></div>
+        <div class="chronoBlock" id="chronoBlock3"></div>
+    </div>
+    <div id="chrono4">
+        <div class="chronoTime" id="chronoTime4">00:00:00.0</div>
+        <div class="chronoName"><span id="chronoDossard4">-</span><span id="chronoName4">-</span></div>
+        <div class="chronoBlock" id="chronoBlock4"></div>
+    </div>
+</div>
+<div id="waitImg" style="display: none;">
+    <div>
+        <img alt="Logo FFME" src="logo512.png" />
+    </div>
+</div>
+<img id="pub" style="display:none">
+</img>
+<script type="text/javascript">
+    // Interval de mise à jour du chronomètre
+    const INTERVAL_UPDATE_CHRONO = 1000;
+    // Interval de mise à jour des données
+    const INTERVAL_UPDATE_DATA = 60000;
+    // Interval de mise à jour du temps locale
+    const INTERVAL_UPDATE_TIME = 300000;
+    // Minimum temps pour rester sur un groupe
+    var GROUPE_CHANGE_TIME = 20000;
+    // Hauteur d'une ligne de tableau, en px
+    const ROW_HEIGHT = 30;
+    // Largeur de la colonne catégories, en px
+    const COL_WIDTH_CAT = 150;
+    // Largeur de la colonne classements, en px
+    const COL_WIDTH_CLA = 40;
+    // Largeur de la colonne dossards, en px
+    const COL_WIDTH_DOS = 56;
+    // Largeur de la colonne points, en px
+    const COL_WIDTH_PTS = 150;
+
+    // Données (actuellement affichées) sur les résultats
+    var dataLive;
+    // Données (dernières chargées) sur les résultats
+    var dataWaiting;
+    // Timestamp de la dernière mise à jour des données
+    var updateDataTS = 0;
+    // Timestamp de l'envoi de la dernière reqête au serveur
+    var tsReq = 0;
+    // Timestamp de la réponse serveur au dernière requête
+    var tsRes = 0;
+    // Delta entre le temps serveur et le temps client, en ms
+    var deltaT = 0;
+    // Identifiant de la compétition
+    var competId = 0;
+    // mode all in one (mixe sur la page toutes les catégories
+    var allInOne = false;
+    // Catégorie d'inscription
+    var categorie = undefined;
+    // Sexe d'inscription
+    var sexe = undefined;
+    // liste des url des images pub
+    var pub = undefined;
+    // Heure de fin pour le groupe affiché
+    var finGroupe;
+    // Indèxe de regroupement
+    var gno = 0;
+    // Timestamp du dernier changement de page
+    var pageChangeTs = -1;
+    // Première ligne affichée dans la table
+    var firstLine = 0;
+    // La page a fini de scroller au moins une fois
+    var scrollDone = false;
+    // La table doit être détruite et reconstruite
+    var shouldRebuild = true;
+    // La connexion au websocket
+    var rtWS;
+    // Tâche périodique pour garder le websocket en vie
+    var rtKeepAliveTimer;
+    //compteur de pub
+    var pubNo = 0;
+    /**
+     * Initialise les éléments dynamique de la page
+     */
+    function init() {
+        console.log("Initializing app ...");
+        $(window).on('resize', function () {
+            shouldRebuild = true;
+        });
+        parseQueryParams();
+        updateTime();
+        updateData(updatePage);
+        updateChrono();
+        setInterval(updateChrono, INTERVAL_UPDATE_CHRONO);
+        setInterval(updateTime, INTERVAL_UPDATE_TIME);
+        connectToWS();
+        console.log("App ready");
+    }
+
+    /**
+     * Parse les paramètres passés dans l'URL
+     */
+    function parseQueryParams() {
+        var queries = {};
+        $.each(document.location.search.substr(1).split('&'), function (c, q) {
+            var i = q.split('=');
+            if (i[0] !== undefined && i[1] !== undefined) {
+                var old = queries[i[0].toString()];
+                if (old === undefined) {
+                    queries[i[0].toString()] = i[1].toString();
+                } else if ((typeof old) === "string") {
+                    queries[i[0].toString()] = [old, i[1].toString()];
+                } else {
+                    old.push(i[1].toString());
+                }
+                console.log(i[0].toString(), queries[i[0].toString()]);
+            }
+        });
+        competId = queries.id;
+        categorie = queries.c;
+        allInOne = queries.all !== undefined;
+        if (allInOne) {
+            console.log("AllInOne mode!");
+        }
+        sexe = queries.s;
+        if (queries.pub) {
+            if ((typeof queries.pub) === "string") {
+                try {
+                    pub = [decodeURIComponent(queries.pub)];
+                    console.log("open " + pubNo, pub);
+                } catch (e) {
+                    console.log(e);
+                }
+            } else {
+                pub = [];
+                for (var i = 0; i < queries.pub.length; i++) {
+                    try {
+                        pub[i] = decodeURIComponent(queries.pub[i]);
+                        console.log("open " + i, pub);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            }
+        }
+        if (queries.changeTime !== undefined) {
+            GROUPE_CHANGE_TIME = queries.changeTime * 1000;
+        }
+        console.log("change time ", GROUPE_CHANGE_TIME);
+    }
+
+    /**
+     * Crée un timestamp qui inclut le delta avec le temps serveur
+     *
+     * @returns {Number} Le timestamp
+     */
+    function ts() {
+        var t = Date.now();
+        t = t + deltaT;
+        return t;
+    }
+
+    /**
+     * Mettre à jour les données
+     *
+     * @@param {function} callback Le callback, optionnel
+     */
+    function updateData(callback) {
+        if (dataLive && ts() - updateDataTS < INTERVAL_UPDATE_DATA) {
+            return;
+        }
+
+        if (dataWaiting) {
+            dataLive = dataWaiting;
+            dataWaiting = null;
+        }
+
+        console.log("Updating data ...");
+        updateDataTS = ts();
+
+        if (competId === undefined) {
+            $("#rHead").html("id compétition non défini !");
+        } else {
+            try {
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json",
+                    url: "ws/app/resultatJson/" + competId,
+                    success: function (result) {
+                        if (allInOne && result.groupes.length > 0) {
+                            var gb = result.groupes[0];
+                            var groupe = {
+                                sequence: gb.sequence,
+                                categorie: "",
+                                sexe: "",
+                                nom: gb.nom,
+                                debut: gb.debut,
+                                fin: gb.fin,
+                                etapes: [],
+                                resultats: [],
+                                vagueId: gb.vagueId,
+                                vitesse: gb.vitesse
+                            };
+                            var maxEtapes = [];
+                            for (g of result.groupes) {//on commence par affecter les etapes du groupe qui en a le plus
+                                if (maxEtapes === undefined || g.etapes.length > maxEtapes.length) {
+                                    maxEtapes = g.etapes;
+                                }
+                            }
+                            var eid = [];
+                            for (e of maxEtapes) {
+                                eid.push(e.id);
+                                groupe.etapes.push(e);
+                            }
+
+                            for (g of result.groupes) {
+                                var cat = g.categorie.length > 3 ? g.categorie.substring(0, 4) : g.categorie;
+                                cat += " " + g.sexe.substring(0, 1);
+                                console.log("Handling ", g);
+                                for (e of g.etapes) {
+                                    if (!eid.includes(e.id)) {
+                                        eid.push(e.id);
+                                        groupe.etapes.push(e);
+                                    }
+                                }
+                                for (e of g.resultats) {
+                                    e.cat = cat;
+                                    groupe.resultats.push(e);
+                                }
+                            }
+                            console.log("singleGroup", groupe);
+                            result.groupes = [groupe];
+                        }
+                        if (!dataLive) {
+                            dataLive = result;
+                        } else {
+
+                            dataWaiting = result;
+                        }
+                        console.log("ASYNC: Data update task done", result);
+                    },
+                    error: function (xhr, status) {
+                        $("#waitImg").show();
+                        setTimeout(updateData, INTERVAL_UPDATE_DATA);
+                        console.log("ASYNC: Data update task error!");
+                        console.error(xhr);
+                    },
+                    complete: function () {
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            } catch (e) {
+                $("#waitImg").show();
+                setTimeout(updateData, INTERVAL_UPDATE_DATA);
+                console.log("SYNC: Data update task error!");
+                console.error(e);
+            }
+        }
+    }
+
+    /**
+     * Demande le temps serveur et calculer le delta avec le temps client
+     */
+    function updateTime() {
+        console.log("Updating time ...");
+        tsReq = ts();
+        $.ajax({
+            type: "GET",
+            url: "ws/app/timestamp",
+            success: function (result) {
+                tsRes = ts();
+                var deltaReq = tsRes - tsReq;
+                if (deltaReq < 1000) {
+                    var tsRef = tsRes - deltaReq;
+                    var timestamp = Number(result);
+                    deltaT = timestamp - tsRef;
+                    console.log("ASYNC: Time update request took " + deltaReq + "ms, delta to server time is " + deltaT + "ms");
+                } else {
+                    console.log("ASYNC: Time update request took " + deltaReq + "ms, took too long to reliably update delta!");
+                }
+            },
+            error: function (xhr, status) {
+                tsRes = ts();
+                var deltaReq = tsRes - tsReq;
+                console.log("ASYNC: Time update request took " + deltaReq + "ms, finished with error");
+                console.error(xhr);
+            }
+        });
+    }
+
+    /**
+     * Donne un regroupement, ou null aucun disponible. Ce
+     * fonction peut retourner le même regroupement plusieurs fois, ou
+     * un nouveau si on change de page.
+     *
+     * @returns {Regroupement|null}
+     */
+    function getGroup() {
+        var regroupement;
+        var debutGroupe;
+        if (dataLive.groupes === undefined) {
+            return regroupement;
+        }
+        for (var i = 0; i < dataLive.groupes.length; i++) {
+            if (gno === dataLive.groupes.length - 1) {
+                updateData();
+            } else if (gno >= dataLive.groupes.length) {
+                gno = 0;
+            }
+            regroupement = dataLive.groupes[gno];
+            if (regroupement === undefined) {
+                console.log("GNO " + gno + " undefined");
+                gno++;
+                continue;
+            }
+            if (categorie !== undefined && categorie !== regroupement.categorie) {
+                console.log("GNO " + regroupement.categorie + " != " + categorie);
+                gno++;
+                continue;
+            }
+            if (sexe !== undefined && sexe !== regroupement.sexe) {
+                console.log("GNO " + regroupement.sexe + " != " + sexe);
+                gno++;
+                continue;
+            }
+            if (regroupement.resultats === undefined || regroupement.resultats.length === 0) {
+                console.log("GNO " + gno + " empty");
+                gno++;
+                continue;
+            }
+            finGroupe = regroupement.fin === undefined ? undefined : new Date(regroupement.fin);
+            debutGroupe = regroupement.debut === undefined ? undefined : new Date(regroupement.debut);
+            var now = ts();
+            if ((debutGroupe === undefined || debutGroupe.getTime() - 600000 < now) && (finGroupe === undefined || finGroupe.getTime() + 600000 > now)) {
+                console.log("GNO " + gno + " Keep   " + regroupement.categorie + " " + regroupement.sexe + " de " + debutGroupe + " a " + finGroupe);
+                break;
+            }
+            console.log("GNO " + gno + " Ignore " + regroupement.categorie + " " + regroupement.sexe);
+            gno++;
+        }
+        if (regroupement !== undefined) {
+            console.log("GNO " + gno + " valid " + regroupement.categorie + " " + regroupement.sexe);
+            if (regroupement.sequence=="QUALIFICATION"){//nettoyage
+                var a=[];
+                var b=[];
+                for (var i of regroupement.resultats){
+                    var run=0;
+                    for (var j of i.etapes){
+                        if (j.resultat!=="-"){
+                            run++;
+                        }
+                    }
+                    if (run===0){
+                        a.push(i);
+                    }else{
+                        b.push(i);
+                    }
+                }
+                console.log("GNO " + gno + " nettoyage " + regroupement.categorie + " " + regroupement.sexe+" "+a.length+" sans résultats, "+b.length+" avec resultats");
+                if (b.length===0){
+                    regroupement.resultats=a;
+                }else{
+                    regroupement.resultats=b;
+                }
+            }
+        } else {
+            console.log("GNO " + gno + " none valid");
+        }
+        return regroupement;
+    }
+
+    function rebuildTable(groupe) {
+        console.log("rebuild table for ", groupe);
+        $("#rHead").html("");
+        $("#rBodyC").html("");
+        $("#rFoot").html("");
+        $("#rDynamicTree").html("");
+
+        if (!groupe) {
+            $("#waitImg").show();
+            return;
+        }
+
+        $("#waitImg").hide();
+
+        if (allInOne) {
+            $("#title2").html("");
+            $("#title2").html(dataLive.nomCompetition);
+        } else {
+            $("#title1").html(dataLive.nomCompetition);
+            $("#title2").html(groupe.categorie + " " + groupe.sexe);
+        }
+        $("#title3").html(groupe.sequence);
+
+        var isVitesse = groupe.vitesse == "true";
+        if (isVitesse && groupe.sequence === "FINALE") {
+            _buildVitesseTree(groupe);
+        } else {
+            $("#rDynamicTree").hide();
+            $("#rHead, #rBody, #rFoot").show();
+
+            // Nombre d'étapes
+            var etapeCount = groupe.etapes.length;
+            // Nombre de résultats
+            var resultCount = groupe.resultats.length;
+            // Taille de police
+            var fontSize = groupe.etapes.length > 15 ? 18 : 24;
+            // Largeur de la table
+            var tableWidth = $("#result").width();
+            // Largeur de la colonne nom
+            var colWidthNom = etapeCount < 12 ? 300 : 150;
+            // Variables itérateurs
+            var i, j;
+            // Largeur des colonnes
+            var colWidths = [];
+            // Positions des colonnes
+            var colPositions = [];
+            if (allInOne) {
+                colWidths.push(COL_WIDTH_CAT); // catégorie
+            }
+            colWidths.push(COL_WIDTH_CLA); // classement
+            colWidths.push(COL_WIDTH_DOS); // dossard
+            colWidths.push(colWidthNom); // nom
+
+            // Largeur des colonnes en tête
+            var ch = 0;
+            for (i = 0; i < colWidths.length; i++) {
+                ch += colWidths[i];
+            }
+            ch += COL_WIDTH_PTS;
+            var cw = Math.floor((tableWidth - ch) / etapeCount);
+            for (i = 0; i < etapeCount; i++) {
+                colWidths.push(cw);
+            }
+            colWidths.push(COL_WIDTH_PTS); // points
+
+            for (i = 0; i < colWidths.length; i++) {
+                colPositions[i] = (i === 0) ? 0 : (colPositions[i - 1] + colWidths[i - 1]);
+            }
+
+            var head = $("#rHead");
+            var cn = 0;
+            var colIdx = 0;
+            if (allInOne) {
+                head.append(createDiv(colPositions[colIdx], 0, colWidths[cn++], ROW_HEIGHT, "Catégorie", "header", "text-align:left;padding-left:6px;"));
+                colIdx++;
+            }
+            head.append(createDiv(colPositions[colIdx], 0, colWidths[cn++], ROW_HEIGHT, "Cl.", "header", "text-align:left;padding-left:6px;"));
+            head.append(createDiv(colPositions[colIdx + 1], 0, colWidths[cn++], ROW_HEIGHT, "#", "header", "text-align:left;padding-left:6px;"));
+            head.append(createDiv(colPositions[colIdx + 2], 0, colWidths[cn++], ROW_HEIGHT, "Nom", "header", "text-align:left;padding-left:6px;"));
+            for (i = 0; i < etapeCount; i++) {
+                head.append(createDiv(colPositions[colIdx + 3 + i], 0, colWidths[cn++], ROW_HEIGHT, groupe.etapes[i].nom, "header", "text-align:center;"));
+            }
+            head.append(createDiv(colPositions[colIdx + 3 + etapeCount], 0, colWidths[cn++], ROW_HEIGHT, (isVitesse ? "Temps retenu" : "Total"), "header", "max-width:" + (colWidths[colWidths.length - 1] - 6) + "px;text-align:right;padding-right:6px"));
+            $("#rHead > div").css({'font-size': fontSize + 'px', 'line-height': ROW_HEIGHT + 'px'});
+
+            var bodyC = $("#rBodyC");
+            for (var i = 0; i < resultCount; i++) {
+                var t = groupe.resultats[i];
+                if (t === undefined) {
+                    continue;
+                }
+                var background = (i % 2) === 0 ? "#ffffff" : "#dddddd";
+                var cn = 0;
+                if (allInOne) {
+                    bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn++], ROW_HEIGHT, t.cat, "content", "background-color:" + background + ";padding-left:6px"));
+                }
+                bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn++], ROW_HEIGHT, t.classement, "content", "background-color:" + background + ";padding-left:6px"));
+                bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn++], ROW_HEIGHT, t.dossard, "content", "background-color:" + background + ";padding-left:6px"));
+                bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn++], ROW_HEIGHT, t.prenom + " " + t.nom, "content", "background-color:" + background + ";margin-left:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis"));
+                for (j = 0; j < groupe.etapes.length; j++) {
+                    var e = undefined;
+                    for (x of t.etapes) {
+                        if (x.idEtape === groupe.etapes[j].id) {
+                            e = x;
+                            break;
+                        }
+                    }
+                    if (e !== undefined) {
+                        var res = e.resultat;
+                        var color = "black";
+                        if (res !== undefined && res.indexOf("T") >= 0) {
+                            color = "red";
+                        } else if (res !== undefined && res.indexOf("Z") >= 0) {
+                            color = "blue";
+                        }
+                        bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn], ROW_HEIGHT, res, "content", "background-color:" + background + ";color:" + color + ";text-align:center", t.dossard + '_' + e.idEtape));
+                    } else {
+                        bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn], ROW_HEIGHT, "-", "content", "background-color:" + background + ";color:" + color + ";text-align:center", ""));
+                    }
+                    cn++;
+
+                }
+                if (t.points === "1440:00.00") {//TODO remove
+                    t.points = "-";
+                }
+                bodyC.append(createDiv(colPositions[cn], i * ROW_HEIGHT, colWidths[cn++], ROW_HEIGHT, (t && t.points) ? t.points : "-", "content", "background-color:" + background + ";max-width:" + (colWidths[colWidths.length - 1] - 6) + "px;text-align:right;padding-right:6px", t.dossard + '_PTS'));
+            }
+            $("#rBodyC > div").css({'font-size': fontSize + 'px', 'line-height': ROW_HEIGHT + 'px'});
+        }
+
+        shouldRebuild = false;
+    }
+
+    function _buildVitesseTree(groupe) {
+        console.log('VITESSE FINALE', groupe);
+
+        $("#rHead, #rBody, #rFoot").hide();
+        $("#rDynamicTree").show();
+
+        var table = $("#rDynamicTree");
+        var cols = groupe.etapes.length * 2;
+
+        var thead = $("#rDynamicTree > thead")[0];
+        if (!thead) {
+            thead = document.createElement('thead');
+            table.append(thead);
+        }
+        var tr = document.createElement('tr');
+        var colWidth = 100 / (groupe.etapes.length + 1);
+        var resMap = {};
+        var lowestIdx;
+        var winner, runnerup, pf1, pf2;
+        var currentOrder = {};
+        var cntOrder = 1;
+        for (i = 0, j = 0; j < cols; i++) {
+            var etape = groupe.etapes[i];
+            if (lowestIdx === undefined || etape.id - 1 < lowestIdx) {
+                lowestIdx = etape.id - 1;
+            }
+            resMap[etape.id] = [];
+            groupe.resultats.forEach(function (res) {
+                res.etapes.forEach(function (e) {
+                    if (e.idEtape === etape.id) {
+                        resMap[etape.id].push({
+                            classement: res.classement,
+                            ordre: e.ordre,
+                            dossard: res.dossard,
+                            nom: res.nom + ' ' + res.prenom,
+                            club: res.nomClub,
+                            resultat: e.resultat
+                        });
+                        if (etape.nom === 'Finales') {
+                            console.log(res);
+                            if (res.classement === 1) {
+                                winner = {
+                                    classement: res.classement,
+                                    ordre: e.ordre,
+                                    dossard: res.dossard,
+                                    nom: res.nom + ' ' + res.prenom,
+                                    club: res.nomClub,
+                                    resultat: e.resultat
+                                };
+                                console.log('Winner found: ' + winner.nom);
+                            } else {
+                                runnerup = {
+                                    classement: res.classement,
+                                    ordre: e.ordre,
+                                    dossard: res.dossard,
+                                    nom: res.nom + ' ' + res.prenom,
+                                    club: res.nomClub,
+                                    resultat: e.resultat
+                                };
+                                console.log('Runner-up found: ' + runnerup.nom);
+                            }
+                        } else if (etape.nom === '1/2') {
+                            if (res.classement === 3) {
+                                pf1 = {
+                                    classement: res.classement,
+                                    ordre: e.ordre,
+                                    dossard: res.dossard,
+                                    nom: res.nom + ' ' + res.prenom,
+                                    club: res.nomClub,
+                                    resultat: e.resultat
+                                };
+                                console.log('PF1 found: ' + pf1.nom);
+                            } else if (res.classement > 3) {
+                                pf2 = {
+                                    classement: res.classement,
+                                    ordre: e.ordre,
+                                    dossard: res.dossard,
+                                    nom: res.nom + ' ' + res.prenom,
+                                    club: res.nomClub,
+                                    resultat: e.resultat
+                                };
+                                console.log('PF2 found: ' + pf2.nom);
+                            }
+                        }
+                    }
+                });
+            });
+            if (winner) {
+                resMap[lowestIdx] = [winner];
+            }
+            resMap[etape.id].sort((r1, r2) => {
+                return r1.classement - r2.classement;
+            });
+
+            var th = document.createElement('th');
+            th.className = "header";
+            th.width = colWidth + "%";
+            th.textContent = etape.nom;
+            tr.appendChild(th);
+            j++;
+
+            th = document.createElement('th');
+            th.textContent = " | ";
+            tr.appendChild(th);
+            j++;
+        }
+
+        var th = document.createElement('th');
+        th.className = "header";
+        th.width = colWidth + "%";
+        tr.appendChild(th);
+
+        thead.appendChild(tr);
+
+        var tbody = $("#rDynamicTree > tbody")[0];
+        if (!tbody) {
+            tbody = document.createElement('tbody');
+            table.append(tbody);
+        }
+        var idx = 0;
+        var data = [];
+        var blanks = 1;
+        var gap = 3;
+        var oo = undefined;
+        for (var etapeId in resMap) {
+            var res = resMap[etapeId];
+            if (!res || !res.length) {
+                continue;
+            }
+            console.log("================", res);
+            if (oo !== undefined) {
+                for (var ri = 0; ri < res.length; ri++) {
+                    var r = res[ri];
+                    r.ordre = oo[r.dossard];
+                }
+            }
+            res.sort((r1, r2) => {
+                var i = r1.ordre - r2.ordre;
+                if (i === 0) {
+                    i = r1.classement - r2.classement;
+                }
+                return i;
+            });
+            if (oo === undefined) {
+                oo = {};
+                for (var ri = 0; ri < res.length; ri++) {
+                    var r = res[ri];
+                    oo[r.dossard] = r.ordre;
+                }
+            }
+
+
+            var colData = data[idx];
+            if (!colData) {
+                colData = [];
+                data[idx] = colData;
+            }
+
+            for (var b = 0; b < blanks; b++) {
+                colData.push({width: colWidth + '%'});
+            }
+
+            var borderTop = false;
+            for (var ri = 0; ri < res.length; ri++) {
+                var r = res[ri];
+                var rx = r.resultat;
+                console.log(rx);
+                if (rx !== undefined) {
+                    if (rx.startsWith("0:")) {
+                        rx = rx.substring(2);
+                    }
+
+                    if (rx.endsWith(" G")) {
+                        rx = "<b>" + rx.substring(0, rx.length - 2) + "</b>";
+                    }
+                    if (rx.endsWith(" P")) {
+                        rx = rx.substring(0, rx.length - 2);
+                    }
+
+                } else {
+                    rx = "*";
+                }
+
+                console.log(r);
+                colData.push({innerHTML: '<div class="' + (res.length > 1 ? 'horizontalLine' : '') + '"></div><div class="cellText" style="overflow:hidden;white-space: nowrap;width:80%">' + rx + ' - ' + r.nom + '</div>', width: colWidth + '%'});
+                borderTop = !borderTop;
+                if (ri < res.length - 1) {
+                    for (var g = 0; g < gap; g++) {
+                        colData.push({width: colWidth + '%'});
+                    }
+
+                }
+            }
+            var linesLeft = 32 - res.length - gap * res.length / 2 - blanks;
+            if (false && pf1 && pf2) {//TODO
+                if (res.length === 2) {
+                    for (var b = 0; b < linesLeft - 4; b++) {
+                        colData.push({width: colWidth + '%'});
+                    }
+                    colData.push({innerHTML: '<div class="header">Petite finale</div>', style: 'height: 20px', width: colWidth + '%'});
+                    colData.push({innerHTML: '<div class="horizontalLine"></div><div class="cellText">' + pf1.dossard + ' - ' + pf1.nom + '</div>', width: colWidth + '%'});
+                    colData.push({width: colWidth + '%'});
+                    colData.push({innerHTML: '<div class="horizontalLine"></div><div class="cellText">' + pf2.dossard + ' - ' + pf2.nom + '</div>', width: colWidth + '%'});
+                } else if (res.length === 1) {
+                    for (var b = 0; b < 30 - 1 - blanks; b++) {
+                        colData.push({width: colWidth + '%'});
+                    }
+                    colData.push({innerHTML: '<div class="cellText">' + pf1.dossard + ' - ' + pf1.nom + '</div>', width: colWidth + '%'});
+                    colData.push({width: colWidth + '%'});
+                }
+            } else {
+                for (var b = 0; b < linesLeft; b++) {
+                    colData.push({width: colWidth + '%'});
+                }
+            }
+
+            idx++;
+            colData = data[idx];
+            if (!colData) {
+                colData = [];
+                data[idx] = colData;
+            }
+
+            for (var b = 0; b < blanks; b++) {
+                colData.push({});
+            }
+            var halfLineLower = true;
+            var fullLine = false;
+            for (var ri = 0; ri < res.length; ri++) {
+                var r = res[ri];
+                colData.push({innerHTML: '<div class="' + (halfLineLower ? 'verticalLineHalfLower' : 'verticalLineHalfUpper') + '"></div>'});
+
+                if (halfLineLower) {
+                    halfLineLower = false;
+                    fullLine = true;
+                } else if (fullLine) {
+                    fullLine = false;
+                    halfLineLower = true;
+                }
+
+                if (ri < res.length - 1) {
+                    for (var g = 0; g < gap; g++) {
+                        colData.push({innerHTML: (fullLine ? '<div class="verticalLine"></div>' + (g === blanks ? '<div class="horizontalLineFull"></div>' : '') : undefined)});
+                    }
+                }
+            }
+            if (pf1 && pf2 && res.length === 2) {
+                for (var b = 0; b < linesLeft - 3; b++) {
+                    colData.push({});
+                }
+                colData.push({innerHTML: '<div class="verticalLineHalfLower"></div>'});
+                colData.push({innerHTML: '<div class="verticalLine"></div><div class="horizontalLineFull"></div>'});
+                colData.push({innerHTML: '<div class="verticalLineHalfUpper"></div>'});
+            } else {
+                for (var b = 0; b < linesLeft; b++) {
+                    colData.push({});
+                }
+            }
+
+            idx++;
+
+            blanks = gap;
+            gap = blanks * 2 + 1;
+        }
+
+        if (data.length < 1) {
+            console.log('NO DATA FOR TABLE');
+            return;
+        }
+
+        console.log('data', data);
+        var rows = 64;
+        for (var r = 0; r < rows; r++) {
+            tr = document.createElement('tr');
+            for (var c = 0; c <= cols; c++) {
+                var colData = data[c];
+                if (!colData) {
+                    console.log('error at r=' + r + ', c=' + c);
+                    continue;
+                }
+
+                td = document.createElement('td');
+
+                var d = colData[r];
+                if (d) {
+                    if (d.width) {
+                        td.width = d.width;
+                    }
+                    if (d.style) {
+                        td.style = d.style;
+                    }
+                    if (d.innerHTML) {
+                        td.innerHTML = d.innerHTML;
+                    }
+                }
+
+                tr.appendChild(td);
+            }
+            if ((r & 1) === 1)
+                tbody.appendChild(tr);
+        }
+    }
+
+    function updateTable(groupe) {
+        console.log("update table for ", groupe);
+        // Nombre de résultats
+        var resultCount = groupe.resultats.length;
+        for (var i = 0; i < resultCount; i++) {
+            var t = groupe.resultats[i];
+            var cell;
+            if (t === undefined) {
+                continue;
+            }
+            for (j = 0; j < t.etapes.length; j++) {
+                var e = t.etapes[j];
+                var res = e.resultat;
+                var color = "black";
+                if (res !== undefined && res.indexOf("T") >= 0) {
+                    color = "red";
+                } else if (res !== undefined && res.indexOf("Z") >= 0) {
+                    color = "blue";
+                }
+                cell = $('#' + t.dossard + '_' + e.idEtape);
+                cell.text(res);
+                cell.css("color", color);
+            }
+            cell = $('#' + t.dossard + '_PTS');
+            if (t.points === "1440:00.00") {//TODO remove
+                t.points = "-";
+            }
+            cell.text(t.points);
+        }
+    }
+
+    /**
+     * Ajoute un élément DIV sur un élément parent
+     *
+     * @param {Number} left décalage du côté gauche du parent
+     * @param {Number} top décalage du côté haut du parent
+     * @param {Number} width la largeur
+     * @param {Number} height la longueur
+     * @param {String} content le contenu
+     * @param {String} cssClass le nom de la classe CSS
+     * @param {String} cssStyle le définition du style CSS
+     * @param {String} id attribute id
+     */
+    function createDiv(left, top, width, height, content, cssClass, cssStyle, id) {
+        return "<div " + (id ? "id=\"" + id + "\"" : "") + " style='position:absolute;height:" + (height - 2) + "px;left:" + left + "px;" + (width ? "width:" + width + "px;" : "") + "top:" + top + "px;" + (cssStyle ? cssStyle : "") + "' class='" + cssClass + "'>" + content + "</div>\n";
+    }
+
+    /**
+     * Mettre à jour la page
+     */
+    function updatePage() {
+        console.log("Updating page ...");
+        $("#pub").hide();
+        if (!dataLive) {
+            $("#waitImg").show();
+            console.log("Skipping page update: no data");
+            setTimeout(updatePage, INTERVAL_UPDATE_DATA);
+            return;
+        }
+
+        if (!dataLive.groupes) {
+            $("#waitImg").show();
+            console.log("Skipping page update: no groups");
+            setTimeout(updatePage, INTERVAL_UPDATE_DATA);
+            return;
+        }
+
+        var groupe = getGroup();
+        if (!groupe) {
+            $("#waitImg").show();
+            console.log("Skipping page update: no group");
+            setTimeout(updatePage, INTERVAL_UPDATE_DATA);
+            return;
+        }
+        $("#waitImg").hide();
+
+        if (groupe.displayEndTime === "false") {
+            $("#chrono").hide();
+        } else {
+            $("#chrono").show();
+        }
+        if (shouldRebuild) {
+            rebuildTable(groupe);
+        } else {
+            updateTable(groupe);
+        }
+
+        // Hauteur de la zone de résultats (header + lignes + footer)
+        var tableH = $("#result").height();
+        // Hauteur du footer
+        var footerH = $("#rFoot").height();
+        // Hauteur du header
+        var headerH = $("#rHead").height();
+        // Hauteur disponible pour le body
+        var bodyH = tableH - footerH - headerH;
+        // Nombre de lignes total à afficher
+        var lineCount = groupe.resultats.length;
+        // Nombre de lignes possible à afficher
+        var maxLines = Math.floor(bodyH / ROW_HEIGHT);
+
+        if (ROW_HEIGHT * lineCount < bodyH) {
+            pageChangeTs = Date.now();
+            gno++;
+            shouldRebuild = true;
+            console.log("will update in gct 2");
+            setTimeout(updatePage, GROUPE_CHANGE_TIME);
+        } else {
+            console.log("will update in gct 1");
+            setTimeout(function () {
+                // Property CSS 'top' du body
+                var top = headerH - firstLine * ROW_HEIGHT;
+                // Le movement à faire vers le haut
+                var movement = maxLines * ROW_HEIGHT;
+                // Si true, le scroll est arrivé en bas des lignes
+                var atBottom = firstLine + maxLines > lineCount;
+                // Le nouveau valeur de 'top' du body
+                var scrollAmount;
+
+                if (atBottom) {
+                    scrollDone = true;
+                    scrollAmount = headerH;
+                    firstLine = 0;
+                } else {
+                    scrollAmount = top - movement;
+                    firstLine += maxLines;
+                }
+                if (scrollDone) {
+                    pageChangeTs = Date.now();
+                    scrollDone = false;
+                    gno++;
+                    shouldRebuild = true;
+                    $("#rBody").css('top', ROW_HEIGHT + 'px');
+                    if (pub) {
+
+                        console.log("show pub " + pubNo, pub[pubNo]);
+                        $("#pub").attr("src", pub[pubNo]);
+                        pubNo=(pubNo+1)%pub.length;
+                        $("#pub").show();
+                        setTimeout(updatePage, GROUPE_CHANGE_TIME);
+                    } else {
+
+                        console.log("no pub");
+                        updatePage();
+                    }
+                } else {
+                    $("#rBody").stop().animate({top: scrollAmount}, 200 * maxLines, function () {
+                        updatePage();
+                    });
+                }
+            }, GROUPE_CHANGE_TIME);
+        }
+        console.log("Page update finished");
+    }
+
+    /**
+     * Mettre à jour le chronomètre
+     */
+    function updateChrono() {
+        if (dataLive && finGroupe) {
+            var targetTime = finGroupe;
+            var nowTime = new Date(ts());
+            var delta = targetTime.getTime() - nowTime.getTime();
+            if (delta < 0) {
+                delta = new Date(delta);
+                $("#chrono").html("TERMINE");
+            } else {
+                var ms = delta % 1000;
+                var d = (delta - ms) / 1000;
+                var x = d;
+                var s = d % 60;
+                d = (d - s) / 60;
+                var m = d % 60;
+                d = (d - m) / 60;
+                delta = new Date(delta);
+                var hours = ("0" + (d)).slice(-2);
+                var minutes = ("0" + m).slice(-2);
+                var seconds = ("0" + s).slice(-2);
+                $("#chrono").html(hours + ":" + minutes + ":" + seconds);
+            }
+        } else {
+            $("#chrono").html("--");
+        }
+    }
+
+    function connectToWS() {
+        if (!allInOne) {
+            console.log("Not connecting to websocket");
+            return;
+        }
+        //var path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/"));
+        var path = "https://mycompet.ffme.fr";
+        var url = ((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.host + path + "/rt?comp=" + competId;
+        console.log("Connecting to websocket: " + url);
+        rtWS = new WebSocket(url);
+        const keepAlive = function () {
+            rtWS.send('keep alive');
+            rtKeepAliveTimer = setTimeout(keepAlive, 15000);
+        };
+        rtWS.onopen = function (event) {
+            console.log("WS: opened");
+            rtKeepAliveTimer = setTimeout(keepAlive, 3000);
+        };
+        rtWS.onclose = function (event) {
+            console.log("WS: closed");
+            if (rtKeepAliveTimer) {
+                clearTimeout(rtKeepAliveTimer);
+            }
+        };
+        rtWS.onmessage = function (message) {
+            console.log("WS: incoming message =>", message);
+            var update;
+            try {
+                update = JSON.parse(message.data);
+                console.log(update);
+                if (allInOne) {
+                    dataWaiting = undefined;
+                    updateDataTS = INTERVAL_UPDATE_DATA + 1;
+                    updateData(function () {
+                        updateTable(getGroup());
+                    });
+                }
+            } catch (ex) {
+                console.error('WS: error parsing update!');
+                console.error(message.data);
+                return;
+            }
+        };
+    }
+</script>
+</body>
+</html>
