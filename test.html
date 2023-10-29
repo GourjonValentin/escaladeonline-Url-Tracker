@@ -452,7 +452,7 @@
             dataLive = dataWaiting;
             dataWaiting = null;
         }
-
+        console.log(dataWaiting);
         console.log("Updating data ...");
         updateDataTS = ts();
 
@@ -517,6 +517,7 @@
                             dataWaiting = result;
                         }
                         console.log("ASYNC: Data update task done", result);
+                        console.log (result);
                     },
                     error: function (xhr, status) {
                         $("#waitImg").show();
